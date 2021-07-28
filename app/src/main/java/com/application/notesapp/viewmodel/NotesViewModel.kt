@@ -56,17 +56,6 @@ class NotesViewModel(
             dataSource.updateNotes(notes)
         }
     }
-    fun onClear(){
-        scope.launch {
-            clear()
-            notes.value = null
-        }
-    }
-    private suspend fun clear() {
-        withContext(Dispatchers.IO) {
-            dataSource.deleteAllNotes()
-        }
-    }
     fun onSaveButton(description : String , title : String){
         scope.launch {
             insert(Notes(description = description,title = title))

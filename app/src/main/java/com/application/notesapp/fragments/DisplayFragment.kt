@@ -1,5 +1,8 @@
 package com.application.notesapp.fragments
 
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -12,6 +15,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.application.notesapp.R
+import com.application.notesapp.adapter.DisplayAdapter
 import com.application.notesapp.database.NoteDatabase
 import com.application.notesapp.database.NotesDao
 import com.application.notesapp.databinding.FragmentDisplayAndAddBinding
@@ -48,9 +52,12 @@ class DisplayFragment : Fragment() {
 
         binding.displayViewModel = displayViewModel
 
-
+        val adapter = DisplayAdapter()
+        binding.notesList.adapter = adapter
         displayViewModel.allNotes.observe(viewLifecycleOwner, Observer {
-            binding.DisplaytextView.setText(it.get(0).title)
+            it?.let{
+                adapter.submitList(it)
+            }
         })
 
         return binding.root
@@ -67,5 +74,23 @@ class DisplayFragment : Fragment() {
                 || super.onOptionsItemSelected(item)
     }
 
+//    private fun onCreateDialog(savedInstanceState: Bundle): Dialog {
+//        return activity?.let {
+//            // Use the Builder class for convenient dialog construction
+//            val builder = AlertDialog.Builder(it)
+//            builder.setMessage("Delete All The Notes!!!")
+//                .setPositiveButton("Delete",
+//                    DialogInterface.OnClickListener { dialog, id ->
+//                        // FIRE ZE MISSILES!
+//                        onDelete()
+//
+//                    })
+//                .setNegativeButton("Cancel",
+//                    DialogInterface.OnClickListener { dialog, id ->
+//                        // User cancelled the dialog
+//                    })
+//            builder.create()
+//        } ?: throw IllegalStateException("Activity cannot be null")
+//    }
 
 }
